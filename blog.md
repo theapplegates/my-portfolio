@@ -5,7 +5,7 @@ Portfolio sites live and die by their images. A single unoptimized JPEG hero can
 By the end you will have:
 
 - A working Astro blog with dynamic routes
-- A Cloudinary URL builder that enforces `f_auto` and `q_auto` on every image
+- A Cloudinary URL builder that enforces `f_jxl` and `q_auto` on every image
 - A reusable `<CloudinaryImage>` component with responsive `srcset`
 - A cinematic blurred hero built from a single Cloudinary image
 - Open Graph images auto-generated for every page
@@ -21,7 +21,7 @@ The most important transformations are:
 
 | Parameter | What it does |
 |---|---|
-| `f_auto` | Serves AVIF to Chrome, WebP to Safari, JPEG as fallback |
+| `f_jxl` | Serves AVIF to Chrome, WebP to Safari, JPEG as fallback |
 | `q_auto` | Finds the lowest quality the eye won't notice |
 | `c_fill,g_auto` | Crops to exact dimensions; AI picks the focal point |
 | `e_blur:N` | Gaussian blur — `2000` is cinematic, `500` is soft |
@@ -31,7 +31,7 @@ The most important transformations are:
 A URL with all of the above looks like this:
 
 ```
-https://res.cloudinary.com/your-cloud/image/upload/f_auto,q_auto,w_800,c_fill,g_auto/my-photo
+https://res.cloudinary.com/your-cloud/image/upload/f_jxl,q_auto,w_800,c_fill,g_auto/my-photo
 ```
 
 Everything between `upload/` and `/my-photo` is the transformation string. You can stack as many parameters as you need.
@@ -82,7 +82,7 @@ export interface CloudinaryOptions {
 }
 
 function buildTransformations(options: CloudinaryOptions): string {
-  const t: string[] = ['f_auto', 'q_auto'];  // always on — you cannot forget them
+  const t: string[] = ['f_jxl', 'q_auto'];  // always on — you cannot forget them
 
   if (options.width)     t.push(`w_${options.width}`);
   if (options.height)    t.push(`h_${options.height}`);
@@ -109,7 +109,7 @@ export function getSrcSet(
 }
 ```
 
-**Why this matters:** `f_auto` and `q_auto` are prepended inside `buildTransformations` before any other option. They are part of the array literal, not a conditional. You cannot call `getImageUrl` without them. This is the architecture decision that makes the whole template safe by default.
+**Why this matters:** `f_jxl` and `q_auto` are prepended inside `buildTransformations` before any other option. They are part of the array literal, not a conditional. You cannot call `getImageUrl` without them. This is the architecture decision that makes the whole template safe by default.
 
 **What `getSrcSet` does:** It calls `getImageUrl` once per width in the `widths` array and joins the results into a standard `srcset` string. Cloudinary generates each resized variant on the fly when the URL is first requested, then caches it on their CDN.
 
@@ -221,7 +221,7 @@ Note that `coverImage` stores a **Cloudinary public ID**, not a file path or ful
 ```markdown
 ---
 title: "Build a Fast Portfolio in Astro with Cloudinary"
-description: "How f_auto and q_auto shrink images by 94% automatically."
+description: "How f_jxl and q_auto shrink images by 94% automatically."
 publishDate: 2025-01-15
 coverImage: "cld-sample-2"
 coverAlt: "Mountain landscape used to demonstrate Cloudinary format selection"
@@ -260,8 +260,8 @@ const sharpCard = getImageUrl(coverImage, {
 The URLs differ only in whether `e_blur:2000` is present. One image becomes two visual layers:
 
 ```
-Background URL:  .../f_auto,q_auto,w_1440,h_760,c_fill,g_auto,e_blur:2000/cld-sample-2
-Foreground URL:  .../f_auto,q_auto,w_880,h_495,c_fill,g_auto/cld-sample-2
+Background URL:  .../f_jxl,q_auto,w_1440,h_760,c_fill,g_auto,e_blur:2000/cld-sample-2
+Foreground URL:  .../f_jxl,q_auto,w_880,h_495,c_fill,g_auto/cld-sample-2
 ```
 
 The layout stacks them:
@@ -310,7 +310,7 @@ Between the hero and the post prose, a three-panel component shows the same imag
 const variants = [
   {
     label: 'Auto-optimized',
-    code: 'f_auto, q_auto',
+    code: 'f_jxl, q_auto',
     options: { width: 640, height: 420, crop: 'fill' as const },
   },
   {
@@ -348,7 +348,7 @@ Every page needs a 1200×630 image for social sharing previews. Normally this me
 ```typescript
 // src/lib/cloudinary.ts
 export function getOgImageUrl(publicId: string): string {
-  return `${BASE_URL}/c_fill,w_1200,h_630,g_auto/e_brightness:-15,f_auto,q_auto/${publicId}`;
+  return `${BASE_URL}/c_fill,w_1200,h_630,g_auto/e_brightness:-15,f_jxl,q_auto/${publicId}`;
 }
 ```
 
@@ -358,7 +358,7 @@ export function getOgImageUrl(publicId: string): string {
 Step 1: c_fill,w_1200,h_630,g_auto
   → Crop to OG dimensions, AI picks the focal point
 
-Step 2: e_brightness:-15,f_auto,q_auto
+Step 2: e_brightness:-15,f_jxl,q_auto
   → Darken by 15 % so white text overlays would remain legible
   → Serve as AVIF/WebP and compress automatically
 ```
@@ -497,8 +497,8 @@ Links whose visible text is `→` or `← Back` need an `aria-label` so search e
 |---|---|---|
 | Original JPEG | 1 200 KB | — |
 | JPEG + `q_auto` | 310 KB | 74 % |
-| WebP + `f_auto,q_auto` | 120 KB | 90 % |
-| AVIF + `f_auto,q_auto` | 78 KB | 94 % |
+| WebP + `f_jxl,q_auto` | 120 KB | 90 % |
+| AVIF + `f_jxl,q_auto` | 78 KB | 94 % |
 
 These are Cloudinary's own benchmarks on representative web images. Your numbers will vary, but the direction is always the same: smaller, faster, better Lighthouse scores.
 
@@ -506,7 +506,7 @@ These are Cloudinary's own benchmarks on representative web images. Your numbers
 
 ## Best practices summary
 
-**Always use `f_auto` and `q_auto` together.** `f_auto` picks the best format; `q_auto` picks the best quality. Neither is as effective alone. Make them structural defaults in your URL builder so they are impossible to omit.
+**Always use `f_jxl` and `q_auto` together.** `f_jxl` picks the best format; `q_auto` picks the best quality. Neither is as effective alone. Make them structural defaults in your URL builder so they are impossible to omit.
 
 **Store public IDs, not URLs.** Your content schema should hold `"cld-sample-2"`, not the full URL. This lets you change transformations site-wide without touching content files.
 
@@ -518,4 +518,4 @@ These are Cloudinary's own benchmarks on representative web images. Your numbers
 
 **One public ID, multiple effects.** The blur hero technique — the same image at `e_blur:2000` for the background and sharp for the foreground — is a direct consequence of treating Cloudinary as a transformation pipeline rather than a CDN. Explore `e_grayscale`, `e_brightness`, `e_contrast`, and `e_art` the same way.
 
-**Let Cloudinary generate your OG images.** A chained transformation `c_fill,w_1200,h_630,g_auto/e_brightness:-15,f_auto,q_auto` turns any cover photo into a social card in one URL. No Figma, no Puppeteer, no screenshot service.
+**Let Cloudinary generate your OG images.** A chained transformation `c_fill,w_1200,h_630,g_auto/e_brightness:-15,f_jxl,q_auto` turns any cover photo into a social card in one URL. No Figma, no Puppeteer, no screenshot service.

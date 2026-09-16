@@ -10,7 +10,7 @@ Built with [Astro 6](https://astro.build) and [Cloudinary](https://cloudinary.co
 
 - Cinematic blog post heroes using the Cloudinary blur technique
 - Responsive images via `srcset` — the browser downloads only the pixels it needs
-- Automatic format selection (`f_auto`) — AVIF for Chrome, WebP for Safari, JPEG fallback
+- Automatic format selection (`f_jxl`) — AVIF for Chrome, WebP for Safari, JPEG fallback
 - Automatic quality compression (`q_auto`) — up to 94 % smaller files with no visual loss
 - Open Graph images generated automatically from your cover photo — no design tool needed
 - Lighthouse 100 across Performance, Accessibility, Best Practices, and SEO
@@ -93,13 +93,13 @@ All Cloudinary logic lives in one file: `src/lib/cloudinary.ts`. Nothing else in
 
 ### The URL builder
 
-Every URL produced by the library prepends `f_auto,q_auto` automatically — you cannot forget them:
+Every URL produced by the library prepends `f_jxl,q_auto` automatically — you cannot forget them:
 
 ```typescript
 // src/lib/cloudinary.ts
 
 function buildTransformations(options: CloudinaryOptions): string {
-  const t: string[] = ['f_auto', 'q_auto']; // always on
+  const t: string[] = ['f_jxl', 'q_auto']; // always on
 
   if (options.width)     t.push(`w_${options.width}`);
   if (options.height)    t.push(`h_${options.height}`);
@@ -115,7 +115,7 @@ function buildTransformations(options: CloudinaryOptions): string {
 A call like `getImageUrl('my-photo', { width: 800, crop: 'fill', gravity: 'auto' })` produces:
 
 ```
-https://res.cloudinary.com/your-cloud/image/upload/f_auto,q_auto,w_800,c_fill,g_auto/my-photo
+https://res.cloudinary.com/your-cloud/image/upload/f_jxl,q_auto,w_800,c_fill,g_auto/my-photo
 ```
 
 ### The three exported functions
@@ -130,7 +130,7 @@ https://res.cloudinary.com/your-cloud/image/upload/f_auto,q_auto,w_800,c_fill,g_
 
 ## Cloudinary transformations used in this template
 
-### `f_auto` — automatic format
+### `f_jxl` — automatic format
 
 Cloudinary inspects the `Accept` header and serves the most efficient format the requesting browser supports:
 
@@ -171,7 +171,7 @@ Converts the image to black and white server-side. No image editor, no second up
 `getOgImageUrl` uses Cloudinary's chained transformation syntax (steps separated by `/`) to crop and darken in two discrete passes:
 
 ```
-/c_fill,w_1200,h_630,g_auto / e_brightness:-15,f_auto,q_auto / my-photo
+/c_fill,w_1200,h_630,g_auto / e_brightness:-15,f_jxl,q_auto / my-photo
 ```
 
 Every page gets a unique, correctly-sized social card from its cover photo — automatically, with no design work.

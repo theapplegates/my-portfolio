@@ -1,8 +1,8 @@
 /**
  * Cloudinary URL builder
  *
- * Every URL produced here includes `f_auto` and `q_auto` by default:
- *   f_auto — serves WebP to Chrome, AVIF where supported, JPEG as fallback
+ * Every URL produced here includes `f_jxl` and `q_auto` by default:
+ *   f_jxl — serves WebP to Chrome, AVIF where supported, JPEG as fallback
  *   q_auto — picks the lowest quality level the human eye won't notice
  *
  * Set PUBLIC_CLOUDINARY_CLOUD_NAME in your .env file.
@@ -25,7 +25,7 @@ export interface CloudinaryOptions {
 }
 
 function buildTransformations(options: CloudinaryOptions): string {
-  const t: string[] = ['f_auto', 'q_auto'];
+  const t: string[] = ['f_jxl', 'f_auto', 'q_auto'];
 
   if (options.width)     t.push(`w_${options.width}`);
   if (options.height)    t.push(`h_${options.height}`);
@@ -68,5 +68,5 @@ export function getOgImageUrl(publicId: string): string {
   // Separate transformation steps chained with '/'
   // 1. Crop to OG dimensions
   // 2. Darken slightly so white text would be legible if added later
-  return `${BASE_URL}/c_fill,w_1200,h_630,g_auto/e_brightness:-15,f_auto,q_auto/${publicId}`;
+  return `${BASE_URL}/c_fill,w_1200,h_630,g_auto/e_brightness:-15,f_jxl,q_auto/${publicId}`;
 }

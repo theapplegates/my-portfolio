@@ -77,4 +77,4 @@ TypeScript knows the shape of every post — no `any`, no surprises.
 
 ## Next steps
 
-From here, adding Cloudinary image optimization is a natural next step. Every image in the template is automatically optimized through `f_auto` and `q_auto` without any extra configuration on your part. Just drop a Cloudinary public ID into your front matter and the `<CloudinaryImage>` component handles the rest.
+From here, adding Cloudinary image optimization is a natural next step. Every image in the template is automatically optimized through `f_jxl` and `q_auto` without any extra configuration on your part. Just drop a Cloudinary public ID into your front matter and the `<CloudinaryImage>` component handles the rest.

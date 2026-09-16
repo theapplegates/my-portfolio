@@ -46,7 +46,7 @@ const lcpSrc = getImageUrl('cld-sample-2', { width: 800, height: 700, crop: 'fil
         <h1>Build Fast.<br />Ship Beautiful.</h1>
         <p>
           A modern blog template that automatically optimizes every image with
-          <code>f_auto</code> and <code>q_auto</code> — no manual exports, no wasted bytes.
+          <code>f_jxl</code> and <code>q_auto</code> — no manual exports, no wasted bytes.
         </p>
         <div class="hero-cta">
           <a href="/blog" class="btn-primary">Read the Blog</a>
@@ -64,7 +64,7 @@ const lcpSrc = getImageUrl('cld-sample-2', { width: 800, height: 700, crop: 'fil
       <!-- Photo mosaic — each panel shows a different Cloudinary transformation -->
       <div class="hero-media">
         <div class="mosaic">
-          <!-- Panel A: full colour, auto-optimized (f_auto + q_auto always applied) -->
+          <!-- Panel A: full colour, auto-optimized (f_jxl + q_auto always applied) -->
           <img
             src={lcpSrc}
             srcset={srcsetA}
@@ -103,14 +103,14 @@ const lcpSrc = getImageUrl('cld-sample-2', { width: 800, height: 700, crop: 'fil
           />
         </div>
 
-        <!-- Floating pill showing what f_auto automatically serves -->
-        <div class="format-pill" aria-label="Formats served by f_auto">
+        <!-- Floating pill showing what f_jxl automatically serves -->
+        <div class="format-pill" aria-label="Formats served by f_jxl">
           <span class="format-dot avif"></span><span>AVIF</span>
           <span class="sep">·</span>
           <span class="format-dot webp"></span><span>WebP</span>
           <span class="sep">·</span>
           <span class="format-dot jpeg"></span><span>JPEG</span>
-          <span class="pill-label">served by <code>f_auto</code></span>
+          <span class="pill-label">served by <code>f_jxl</code></span>
         </div>
       </div>
     </div>
@@ -121,7 +121,7 @@ const lcpSrc = getImageUrl('cld-sample-2', { width: 800, height: 700, crop: 'fil
     <div class="container features-grid">
       <div class="feature-card">
         <span class="feature-icon" aria-hidden="true">⚡</span>
-        <h2><code>f_auto</code></h2>
+        <h2><code>f_jxl</code></h2>
         <p>
           Automatically serves WebP or AVIF to modern browsers, JPEG to older ones.
           Up to 80 % smaller files with no code changes.

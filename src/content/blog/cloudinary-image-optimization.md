@@ -1,6 +1,6 @@
 ---
 title: "Build a Fast Portfolio in Astro with Cloudinary Image Optimization"
-description: "Learn how f_auto and q_auto automatically shrink images by up to 80% with zero visual quality loss — and how to wire them into a reusable Astro component."
+description: "Learn how f_jxl and q_auto automatically shrink images by up to 80% with zero visual quality loss — and how to wire them into a reusable Astro component."
 publishDate: 2024-12-15
 coverImage: "cld-sample-2"
 coverAlt: "Scenic landscape — used here to demonstrate Cloudinary's automatic format selection"
@@ -12,9 +12,9 @@ Portfolio sites live and die by their image performance. A single unoptimized JP
 
 Cloudinary solves this with two transformations you should apply to every image.
 
-## f_auto — automatic format
+## f_jxl — automatic format
 
-`f_auto` instructs Cloudinary to serve the most efficient format the requesting browser understands:
+`f_jxl` instructs Cloudinary to serve the most efficient format the requesting browser understands:
 
 - **Chrome / Edge** → AVIF or WebP
 - **Safari** → WebP or HEIC
@@ -28,11 +28,11 @@ A 1.2 MB JPEG becomes ~80 KB AVIF delivered to Chrome — a **93 % reduction** w
 
 ## How this template applies both
 
-Every URL produced by `src/lib/cloudinary.ts` always starts with `f_auto,q_auto`:
+Every URL produced by `src/lib/cloudinary.ts` always starts with `f_jxl,q_auto`:
 
 ```typescript
-// f_auto and q_auto are always prepended — you can't forget them
-const t: string[] = ['f_auto', 'q_auto'];
+// f_jxl and q_auto are always prepended — you can't forget them
+const t: string[] = ['f_jxl', 'q_auto'];
 ```
 
 Passing an image through `<CloudinaryImage>` automatically produces a `srcset` with multiple widths, so the browser downloads only the size it actually needs.
@@ -43,7 +43,7 @@ Passing an image through `<CloudinaryImage>` automatically produces a `srcset` w
 |--------|-----------|---------|
 | Original JPEG | 1 200 KB | — |
 | JPEG q_auto | 310 KB | 74 % |
-| WebP f_auto + q_auto | 120 KB | 90 % |
-| AVIF f_auto + q_auto | 78 KB | 94 % |
+| WebP f_jxl + q_auto | 120 KB | 90 % |
+| AVIF f_jxl + q_auto | 78 KB | 94 % |
 
 These numbers come from Cloudinary's own benchmarks on representative web images. Your results will vary, but the direction is always the same: smaller, faster, better Lighthouse scores.

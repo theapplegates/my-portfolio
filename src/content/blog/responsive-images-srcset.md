@@ -44,7 +44,7 @@ This reads: "below 640 px the image fills the screen; between 640–1024 px it f
 
 ## How this template generates it automatically
 
-`getSrcSet()` in `src/lib/cloudinary.ts` builds the full `srcset` string from a list of widths. Each entry is an independently-optimized Cloudinary URL with `f_auto,q_auto` baked in:
+`getSrcSet()` in `src/lib/cloudinary.ts` builds the full `srcset` string from a list of widths. Each entry is an independently-optimized Cloudinary URL with `f_jxl,q_auto` baked in:
 
 ```typescript
 export function getSrcSet(publicId, widths = [400, 800, 1200, 1600], options = {}) {
