@@ -8,6 +8,18 @@ tags: ["cloudinary", "performance", "astro"]
 author: "Eugene Musebe"
 ---
 
+import CloudinaryImage from '../components/CloudinaryImage.astro';
+
+<CloudinaryImage
+  publicId="Gulfstream-G800.jpg"
+  alt="Description of the photo"
+  width={800}
+  height={500}
+  crop="fill"
+  gravity="auto"
+  loading="lazy"
+/>
+
 Portfolio sites live and die by their image performance. A single unoptimized JPEG hero can weigh 2 MB, tank your Core Web Vitals, and cost your visitors on metered mobile data plans.
 
 Cloudinary solves this with two transformations you should apply to every image.

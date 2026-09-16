@@ -25,7 +25,7 @@ export interface CloudinaryOptions {
 }
 
 function buildTransformations(options: CloudinaryOptions): string {
-  const t: string[] = ['f_jxl', 'f_auto', 'q_auto'];
+  const t: string[] = ['f_jxl', 'q_auto'];
 
   if (options.width)     t.push(`w_${options.width}`);
   if (options.height)    t.push(`h_${options.height}`);
