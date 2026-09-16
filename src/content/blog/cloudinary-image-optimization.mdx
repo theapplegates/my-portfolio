@@ -8,13 +8,14 @@ tags: ["cloudinary", "performance", "astro"]
 author: "Eugene Musebe"
 ---
 
-import CloudinaryImage from '../components/CloudinaryImage.astro';
+import CloudinaryImage from '../../components/CloudinaryImage.astro';
 
 <CloudinaryImage
   publicId="Gulfstream-G800.jpg"
   alt="Description of the photo"
   width={800}
   height={500}
+  sizes="(max-width: 720px) calc(100vw - 3rem), 672px"
   crop="fill"
   gravity="auto"
   loading="lazy"
