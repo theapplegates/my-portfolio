@@ -67,7 +67,7 @@ src/
 │   └── Footer.astro
 ├── content/
 │   └── blog/
-│       ├── cloudinary-image-optimization.md
+│       ├── cloudinary-image-optimization.mdx
 │       ├── responsive-images-srcset.md
 │       └── getting-started-with-astro.md
 ├── layouts/
@@ -222,6 +222,33 @@ It generates a full `srcset` and `sizes` hint automatically. The `width` and `he
 ## Writing a blog post
 
 Create a new `.md` file inside `src/content/blog/`. The filename becomes the URL slug.
+
+For posts containing Astro components, use `.mdx` instead. Both extensions are
+supported, but component imports only run in MDX. From `src/content/blog/`, import
+the image component with:
+
+```mdx
+import CloudinaryImage from '../../components/CloudinaryImage.astro';
+
+<CloudinaryImage
+  publicId="Gulfstream-G800.jpg"
+  alt="Gulfstream G800 aircraft"
+  width={800}
+  height={500}
+  sizes="(max-width: 720px) calc(100vw - 3rem), 672px"
+  crop="fill"
+  gravity="auto"
+/>
+```
+
+The Gulfstream example requires `PUBLIC_CLOUDINARY_CLOUD_NAME=paulapplegate-com`
+in your local `.env` and your hosting provider's build environment. Restart the
+development server or rebuild after changing it. Without this setting, the URL
+uses Cloudinary's `demo` account, which does not contain your personal uploads.
+
+Format note: the current URL builder explicitly requests JPEG XL with `f_jxl`.
+It does not negotiate AVIF or WebP, so these images require a browser with JPEG XL
+support enabled. `q_auto` controls quality, not format selection.
 
 ```markdown
 ---
